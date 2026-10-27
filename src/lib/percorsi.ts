@@ -1,5 +1,6 @@
 /** Percorsi raggiungibili senza essere collegati. */
-export const PERCORSI_PUBBLICI = ["/accedi", "/registrati", "/configurazione", "/auth/conferma"];
+// "/design" è la pagina di controllo del design system: in produzione risponde 404.
+export const PERCORSI_PUBBLICI = ["/accedi", "/registrati", "/configurazione", "/auth/conferma", "/design"];
 
 export function eRotaPubblica(pathname: string): boolean {
   return PERCORSI_PUBBLICI.some((p) => pathname === p || pathname.startsWith(`${p}/`));

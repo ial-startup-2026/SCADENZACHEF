@@ -58,7 +58,7 @@ export function ModuloBenvenuto({ codiceIniziale }: { codiceIniziale: string }) 
           <Campo etichetta="Nome del locale" name="nome_locale" maxLength={80} autoComplete="organization" required />
           <Campo etichetta="Il tuo nome" name="nome" autoComplete="given-name" maxLength={60} required />
           <CampoRuoloCucina idLista="ruoli-nuovo" />
-          <p className="text-sm text-muted-foreground">Sarai l&apos;Admin: potrai invitare la squadra con un codice.</p>
+          <p className="text-base text-muted-foreground">Sarai l&apos;Admin: potrai invitare la squadra con un codice.</p>
         </ModuloAzione>
       )}
     </div>

@@ -29,7 +29,7 @@ export function Campo({ etichetta, suggerimento, id, name, defaultValue, ...prop
         {...props}
       />
       {suggerimento && (
-        <p id={`${idCampo}-info`} className="text-sm text-muted-foreground">
+        <p id={`${idCampo}-info`} className="text-base text-muted-foreground">
           {suggerimento}
         </p>
       )}

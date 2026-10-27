@@ -34,11 +34,13 @@ export async function aggiornaProfilo(_prec: StatoAzione, dati: FormData): Promi
   return { ok: "Profilo aggiornato." };
 }
 
-export async function rigeneraCodice(): Promise<void> {
+export async function rigeneraCodice(): Promise<StatoAzione> {
   await richiediAdmin();
   const supabase = await creaClientServer();
-  await supabase.rpc("rigenera_codice_invito");
+  const { error } = await supabase.rpc("rigenera_codice_invito");
+  if (error) return { errore: messaggioErrore(error) };
   revalidatePath("/profilo/team");
+  return { ok: "Nuovo codice generato." };
 }
 
 export async function cambiaRuolo(utenteId: string, ruolo: "admin" | "staff"): Promise<StatoAzione> {
