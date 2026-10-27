@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "icone": "node scripts/genera-icone.mjs",
-    "db:sql": "node scripts/unisci-sql.mjs"
+    "db:sql": "node scripts/unisci-sql.mjs",
+    "dev:demo": "MODALITA_DEMO=1 next dev"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

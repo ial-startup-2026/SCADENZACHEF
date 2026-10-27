@@ -8,16 +8,20 @@ import { Button } from "@/components/ui/button";
 import { ridimensionaImmagine } from "@/lib/immagini";
 import { creaClientBrowser } from "@/lib/supabase/client";
 
-type Props = { utenteId: string; localeId: string };
+type Props = { utenteId: string; localeId: string; /** Modalità demo: nessun archivio per le foto. */ nonDisponibile?: boolean };
 
 /** Scatta o scegli una foto: viene ritagliata a quadrato, ridotta a 256px e caricata. */
-export function CambiaFotoProfilo({ utenteId, localeId }: Props) {
+export function CambiaFotoProfilo({ utenteId, localeId, nonDisponibile }: Props) {
   const input = useRef<HTMLInputElement>(null);
   const [inCorso, setInCorso] = useState(false);
   const router = useRouter();
 
   async function suScelta(file: File | undefined) {
     if (!file) return;
+    if (nonDisponibile) {
+      toast.info("In modalità demo la foto non si può salvare.");
+      return;
+    }
     setInCorso(true);
     try {
       const immagine = await ridimensionaImmagine(file, { latoMax: 256, qualita: 0.85, quadrata: true });

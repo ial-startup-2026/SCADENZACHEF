@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { eRotaPubblica } from "@/lib/percorsi";
 import { supabaseConfigurato } from "@/lib/supabase/env";
 import { aggiornaSessione, redirectConCookie } from "@/lib/supabase/sessione";
@@ -9,6 +10,17 @@ import { aggiornaSessione, redirectConCookie } from "@/lib/supabase/sessione";
  */
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // Modalità demo (solo sviluppo): nessun login. Le pagine di accesso rimandano alla Home.
+  if (modalitaDemo()) {
+    if (pathname === "/accedi" || pathname === "/registrati" || pathname === "/benvenuto") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
 
   if (!supabaseConfigurato()) {
     if (pathname === "/configurazione") return NextResponse.next();

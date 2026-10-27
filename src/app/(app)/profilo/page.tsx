@@ -10,6 +10,7 @@ import { IntestazionePagina } from "@/components/intestazione-pagina";
 import { ModuloAzione } from "@/components/modulo-azione";
 import { SelettoreTema } from "@/components/selettore-tema";
 import { richiediProfilo } from "@/lib/auth";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { urlFotoProfilo } from "@/lib/foto-profilo";
 import { creaClientServer } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -21,8 +22,7 @@ export const metadata: Metadata = { title: "Profilo" };
 
 export default async function ProfiloPage() {
   const { profilo, locale } = await richiediProfilo();
-  const supabase = await creaClientServer();
-  const urlFoto = await urlFotoProfilo(supabase, profilo.foto_url);
+  const urlFoto = modalitaDemo() ? null : await urlFotoProfilo(await creaClientServer(), profilo.foto_url);
   const admin = profilo.ruolo === "admin";
 
   return (
@@ -36,7 +36,7 @@ export default async function ProfiloPage() {
           <p className="text-muted-foreground">
             {admin ? "Admin" : "Staff"} · {locale.nome}
           </p>
-          <CambiaFotoProfilo utenteId={profilo.id} localeId={profilo.locale_id} />
+          <CambiaFotoProfilo utenteId={profilo.id} localeId={profilo.locale_id} nonDisponibile={modalitaDemo()} />
         </div>
       </section>
 

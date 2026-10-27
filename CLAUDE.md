@@ -70,6 +70,12 @@ A fine di ogni fase: lint + typecheck + test devono passare, poi avvio e verific
 - Filtro allergeni: già presente come "Senza allergene" (testo); le icone e l'avviso fisso arrivano in Fase 5.
 - Dopo `npm run build` con il server di sviluppo acceso il CSS può restare vecchio: fermare il server, `rm -rf .next/dev`, riavviare.
 
+## Modalità demo (senza login e senza database)
+- `npm run dev:demo` (= `MODALITA_DEMO=1 next dev`): l'app si apre sulle schermate vere (Home, Magazzino, Spesa, Profilo, Squadra, Soglie) **senza login e senza Supabase**, con dati di prova in memoria. Serve a vedere e provare l'app prima di collegare il database. Il login **non è stato rimosso**: con `npm run dev` torna tutto com'era.
+- Interruttore: `src/lib/demo/modalita.ts` → `modalitaDemo()`: vero solo con `MODALITA_DEMO=1` **e mai con `NODE_ENV=production`** (testato). Punti di innesto: `proxy.ts` (nessun controllo, `/accedi|/registrati|/benvenuto` → `/`), `lib/auth.ts` (utente e profilo demo = Marta Rossi, Admin), `lib/dati.ts`, `magazzino/azioni.ts`, `profilo/azioni.ts`, `profilo/soglie/*`, `profilo/team/page.tsx`, `esci()`.
+- Dati e regole: `src/lib/demo/` (`archivio.ts` = stato in memoria condiviso tra le richieste, `prodotti.ts` = fixture con scadenze relative a oggi, `operazioni.ts` = stesse regole di `scarica_prodotto`/`annulla_movimento` su un registro in memoria, testate). Lo stato si azzera al riavvio del server. La foto del profilo non si salva in demo.
+- Ogni nuova funzione che legge o scrive dati deve avere il suo ramo demo, oppure dire chiaramente che non è disponibile in demo.
+
 ## Design system
 - **Token in un solo punto**: `src/app/globals.css` (variabili CSS + `@theme inline`). Colori in esadecimale; `src/lib/design/token.test.ts` verifica contrasto AA (≥ 4.5:1) di tutte le coppie testo/sfondo in chiaro e scuro, e che `COLORI_PWA` coincida con i token.
 - Primario verde bosco `#1f5a3f` (scuro: `#6cc49a`). Tema chiaro/scuro/auto: classe `dark` su `<html>`, preferenza in `localStorage` (`src/lib/tema.ts`, script inline anti-flash).

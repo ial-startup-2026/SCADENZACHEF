@@ -5,6 +5,8 @@ import { ErroreCaricamento } from "@/components/errore-caricamento";
 import { IntestazionePagina } from "@/components/intestazione-pagina";
 import { buttonVariants } from "@/components/ui/button";
 import { richiediAdmin } from "@/lib/auth";
+import { archivioDemo } from "@/lib/demo/archivio";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { SOGLIE_DEFAULT } from "@/lib/scadenze/soglie";
 import { creaClientServer } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -14,11 +16,19 @@ export const metadata: Metadata = { title: "Soglie di scadenza" };
 
 export default async function SogliePage() {
   await richiediAdmin();
-  const supabase = await creaClientServer();
-  const { data, error } = await supabase
-    .from("impostazioni_locale")
-    .select("soglia_giallo, soglia_arancione")
-    .maybeSingle<{ soglia_giallo: number; soglia_arancione: number }>();
+  let iniziali = SOGLIE_DEFAULT;
+  let errore = false;
+  if (modalitaDemo()) {
+    iniziali = archivioDemo().soglie;
+  } else {
+    const supabase = await creaClientServer();
+    const { data, error } = await supabase
+      .from("impostazioni_locale")
+      .select("soglia_giallo, soglia_arancione")
+      .maybeSingle<{ soglia_giallo: number; soglia_arancione: number }>();
+    errore = Boolean(error);
+    if (data) iniziali = { giallo: data.soglia_giallo, arancione: data.soglia_arancione };
+  }
 
   return (
     <>
@@ -27,12 +37,10 @@ export default async function SogliePage() {
         Profilo
       </Link>
       <IntestazionePagina titolo="Soglie di scadenza" sottotitolo="Quando un prodotto cambia colore." />
-      {error ? (
+      {errore ? (
         <ErroreCaricamento cosa="le soglie" href="/profilo/soglie" />
       ) : (
-        <ModuloSoglie
-          iniziali={data ? { giallo: data.soglia_giallo, arancione: data.soglia_arancione } : SOGLIE_DEFAULT}
-        />
+        <ModuloSoglie iniziali={iniziali} />
       )}
     </>
   );

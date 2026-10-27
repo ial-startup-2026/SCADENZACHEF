@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { richiediAdmin } from "@/lib/auth";
+import { archivioDemo } from "@/lib/demo/archivio";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { messaggioErrore } from "@/lib/errori";
 import { schemaSoglie } from "@/lib/scadenze/soglie";
 import { creaClientServer } from "@/lib/supabase/server";
@@ -13,6 +15,12 @@ export async function salvaSoglie(input: { giallo: number; arancione: number }):
   const { profilo } = await richiediAdmin();
   const esito = schemaSoglie.safeParse(input);
   if (!esito.success) return { ok: false, errore: esito.error.issues[0].message };
+
+  if (modalitaDemo()) {
+    archivioDemo().soglie = { ...esito.data };
+    revalidatePath("/", "layout");
+    return { ok: true };
+  }
 
   const supabase = await creaClientServer();
   const { data, error } = await supabase

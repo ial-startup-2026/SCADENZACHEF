@@ -1,10 +1,13 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { LOCALE_DEMO, profiloDemo, UTENTE_DEMO } from "@/lib/demo/archivio";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { creaClientServer } from "@/lib/supabase/server";
 import type { Locale, Profilo } from "@/lib/supabase/tipi";
 
 /** Utente collegato, verificato dal server Auth (non solo dal cookie). Una volta per richiesta. */
-export const utenteCorrente = cache(async () => {
+export const utenteCorrente = cache(async (): Promise<{ id: string; email?: string | null } | null> => {
+  if (modalitaDemo()) return UTENTE_DEMO;
   const supabase = await creaClientServer();
   const { data } = await supabase.auth.getUser();
   return data.user;
@@ -14,6 +17,7 @@ export const utenteCorrente = cache(async () => {
 export const profiloCorrente = cache(async () => {
   const utente = await utenteCorrente();
   if (!utente) return null;
+  if (modalitaDemo()) return { utente, profilo: profiloDemo(), locale: LOCALE_DEMO };
   const supabase = await creaClientServer();
   const { data: profilo } = await supabase
     .from("profili")

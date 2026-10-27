@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { messaggioErroreAuth } from "@/lib/errori";
 import { percorsoSicuro } from "@/lib/percorsi";
 import { valoriDa, type StatoAzione } from "@/lib/stato-azione";
@@ -64,6 +65,7 @@ export async function registrati(_prec: StatoAzione, dati: FormData): Promise<St
 }
 
 export async function esci() {
+  if (modalitaDemo()) redirect("/"); // niente accesso in modalità demo
   const supabase = await creaClientServer();
   await supabase.auth.signOut();
   redirect("/accedi");

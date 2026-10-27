@@ -9,7 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { arrotonda, formattaQuantita } from "@/lib/quantita";
 import { FILTRI_VUOTI, filtraProdotti, haFiltriAttivi, type Filtri } from "@/lib/scadenze/catalogo";
 import type { Soglie } from "@/lib/scadenze/soglie";
-import type { EsitoAnnulla, EsitoModifica, EsitoScarico } from "@/app/(app)/magazzino/azioni";
+import type { EsitoAnnulla, EsitoModifica, EsitoScarico } from "@/lib/scadenze/esiti";
 import type { ProdottoMagazzino } from "@/lib/supabase/tipi";
 import { cn } from "@/lib/utils";
 import { BarraFiltri } from "./barra-filtri";

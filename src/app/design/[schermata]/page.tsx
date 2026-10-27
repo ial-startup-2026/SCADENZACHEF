@@ -5,7 +5,7 @@ import { TabBar } from "@/components/tab-bar";
 import SpesaPage from "../../(app)/spesa/page";
 import ScansionaPage from "../../scansiona/page";
 import { CatalogoDemo } from "../catalogo-demo";
-import { prodottiDemo } from "../dati-demo";
+import { prodottiDemo } from "@/lib/demo/prodotti";
 import { contaPerStato } from "@/lib/scadenze/catalogo";
 import { ModuloSoglie } from "../../(app)/profilo/soglie/modulo-soglie";
 import { SOGLIE_DEFAULT } from "@/lib/scadenze/soglie";

@@ -5,6 +5,8 @@ import { ChevronLeft } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { IntestazionePagina } from "@/components/intestazione-pagina";
 import { richiediAdmin } from "@/lib/auth";
+import { archivioDemo } from "@/lib/demo/archivio";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { urlFotoProfilo } from "@/lib/foto-profilo";
 import { creaClientServer } from "@/lib/supabase/server";
 import type { Profilo } from "@/lib/supabase/tipi";
@@ -17,23 +19,27 @@ export const metadata: Metadata = { title: "Squadra" };
 
 export default async function TeamPage() {
   const { profilo, locale } = await richiediAdmin();
-  const supabase = await creaClientServer();
+  const demo = modalitaDemo();
+  const supabase = demo ? null : await creaClientServer();
 
-  const [{ data: codice }, { data: membri, error: erroreMembri }, intestazioni] = await Promise.all([
-    supabase.rpc("leggi_codice_invito"),
-    supabase
-      .from("profili")
-      .select("id, locale_id, nome, ruolo_cucina, ruolo, foto_url")
-      .order("nome")
-      .returns<Profilo[]>(),
-    headers(),
-  ]);
+  const [codice, membri, erroreMembri, intestazioni] = await (async () => {
+    const intestazioni = await headers();
+    if (!supabase) {
+      const { codiceInvito, membri } = archivioDemo();
+      return [codiceInvito, [...membri].sort((a, b) => a.nome.localeCompare(b.nome, "it")), null, intestazioni] as const;
+    }
+    const [c, m] = await Promise.all([
+      supabase.rpc("leggi_codice_invito"),
+      supabase.from("profili").select("id, locale_id, nome, ruolo_cucina, ruolo, foto_url").order("nome").returns<Profilo[]>(),
+    ]);
+    return [c.data as string | null, m.data, m.error, intestazioni] as const;
+  })();
 
   const host = intestazioni.get("x-forwarded-host") ?? intestazioni.get("host") ?? "";
   const protocollo = intestazioni.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const link = `${protocollo}://${host}/benvenuto?codice=${codice ?? ""}`;
 
-  const foto = await Promise.all((membri ?? []).map((m) => urlFotoProfilo(supabase, m.foto_url)));
+  const foto = await Promise.all((membri ?? []).map((m) => (supabase ? urlFotoProfilo(supabase, m.foto_url) : null)));
 
   return (
     <>

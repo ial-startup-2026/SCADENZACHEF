@@ -1,3 +1,5 @@
+import { archivioDemo } from "@/lib/demo/archivio";
+import { modalitaDemo } from "@/lib/demo/modalita";
 import { creaClientServer } from "@/lib/supabase/server";
 import { COLONNE_PRODOTTO, type ProdottoMagazzino } from "@/lib/supabase/tipi";
 import { SOGLIE_DEFAULT, type Soglie } from "@/lib/scadenze/soglie";
@@ -12,6 +14,10 @@ export type Magazzino =
  * sbagliate sarebbe peggio di non mostrare nulla.
  */
 export async function caricaMagazzino(): Promise<Magazzino> {
+  if (modalitaDemo()) {
+    const { prodotti, soglie } = archivioDemo();
+    return { errore: false, prodotti: prodotti.filter((p) => p.stato === "attivo").map((p) => ({ ...p })), soglie };
+  }
   const supabase = await creaClientServer();
   const [prodotti, impostazioni] = await Promise.all([
     supabase
