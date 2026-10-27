@@ -44,6 +44,7 @@ describe.each(Object.entries(TEMI))("token tema %s", (nome, t) => {
     ["hero-fg", "hero-from"],
     ["hero-fg", "hero-to"],
     ["hero-cta-fg", "hero-cta-bg"],
+    ["accento-foreground", "accento"],
     ["destructive", "background"],
     ...STATI_SCADENZA.map((s): [string, string] => [`stato-${s}-fg`, `stato-${s}-bg`]),
   ];
@@ -58,6 +59,11 @@ describe.each(Object.entries(TEMI))("token tema %s", (nome, t) => {
     expect(contrasto(t.input, t.card)).toBeGreaterThanOrEqual(3);
   });
 
+  it.each(STATI_SCADENZA)("l'anello usa per '%s' un colore con contrasto >= 3 sulla scheda", (stato) => {
+    expect(t[`anello-${stato}`], `manca --anello-${stato}`).toBeDefined();
+    expect(contrasto(t[`anello-${stato}`], t.card)).toBeGreaterThanOrEqual(3);
+  });
+
   it("i colori del semaforo sono tutti distinti", () => {
     const sfondi = STATI_SCADENZA.map((s) => t[`stato-${s}-bg`]);
     expect(new Set(sfondi).size).toBe(STATI_SCADENZA.length);
@@ -66,6 +72,6 @@ describe.each(Object.entries(TEMI))("token tema %s", (nome, t) => {
   it(`i colori PWA (${nome}) coincidono con i token`, () => {
     const pwa = COLORI_PWA[nome as "chiaro" | "scuro"];
     expect(pwa.sfondo).toBe(t.background);
-    if (nome === "chiaro") expect(pwa.tema).toBe(t.primary);
+    expect(pwa.tema).toBe(t.background);
   });
 });

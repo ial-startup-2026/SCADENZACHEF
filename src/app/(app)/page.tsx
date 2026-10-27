@@ -8,18 +8,5 @@ export default async function HomePage() {
   const [dati, magazzino] = await Promise.all([profiloCorrente(), caricaMagazzino()]);
 
   const conteggi = magazzino.errore ? null : contaPerStato(magazzino.prodotti, adesso, magazzino.soglie);
-  return (
-    <HomeContenuto
-      adesso={adesso}
-      nome={dati?.profilo.nome.split(" ")[0]}
-      conteggi={
-        conteggi && {
-          scaduto: conteggi.scaduto,
-          oggi: conteggi.oggi,
-          attenzione: conteggi.attenzione,
-          "in-scadenza": conteggi["in-scadenza"],
-        }
-      }
-    />
-  );
+  return <HomeContenuto adesso={adesso} nome={dati?.profilo.nome.split(" ")[0]} conteggi={conteggi} />;
 }

@@ -23,7 +23,7 @@ type PresentazioneStato = {
   icona: LucideIcon;
   /** Classi Tailwind: sfondo, testo e bordo (mai solo colore: c'è sempre icona + testo). */
   classi: string;
-  /** Bordo sinistro colorato delle card del catalogo. */
+  /** Barretta colorata a sinistra delle schede del catalogo. */
   barra: string;
 };
 
@@ -32,33 +32,33 @@ export const PRESENTAZIONE_STATO: Record<StatoScadenza, PresentazioneStato> = {
     etichetta: "OK",
     icona: CircleCheck,
     classi: "bg-stato-ok text-stato-ok-foreground border-stato-ok-border",
-    barra: "border-l-stato-ok-border",
+    barra: "bg-stato-ok-border",
   },
   "in-scadenza": {
     etichetta: "In scadenza",
     icona: Clock,
     classi:
       "bg-stato-in-scadenza text-stato-in-scadenza-foreground border-stato-in-scadenza-border",
-    barra: "border-l-stato-in-scadenza-border",
+    barra: "bg-stato-in-scadenza-border",
   },
   attenzione: {
     etichetta: "Attenzione",
     icona: TriangleAlert,
     classi:
       "bg-stato-attenzione text-stato-attenzione-foreground border-stato-attenzione-border",
-    barra: "border-l-stato-attenzione-border",
+    barra: "bg-stato-attenzione-border",
   },
   oggi: {
     etichetta: "Scade oggi",
     icona: AlarmClock,
     classi: "bg-stato-oggi text-stato-oggi-foreground border-stato-oggi-border",
-    barra: "border-l-stato-oggi-border",
+    barra: "bg-stato-oggi-border",
   },
   scaduto: {
     etichetta: "Scaduto",
     icona: OctagonX,
     classi:
       "bg-stato-scaduto text-stato-scaduto-foreground border-stato-scaduto-border",
-    barra: "border-l-stato-scaduto-border",
+    barra: "bg-stato-scaduto-border",
   },
 };

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { PackageCheck, ScanLine } from "lucide-react";
+import { ScanLine } from "lucide-react";
+import { AnelloStato, type ConteggiStato } from "@/components/anello-stato";
 import { ErroreCaricamento } from "@/components/errore-caricamento";
 import { IntestazionePagina } from "@/components/intestazione-pagina";
-import { RiepilogoSemaforo, type Conteggi } from "@/components/riepilogo-semaforo";
 import { buttonVariants } from "@/components/ui/button";
 import { dataEstesa, salutoPer } from "@/lib/saluto";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ type Props = {
   adesso: Date;
   nome?: string;
   /** `null` = non sono riuscito a leggere il magazzino. */
-  conteggi: Conteggi | null;
+  conteggi: ConteggiStato | null;
   /** `false` nelle anteprime senza login. */
   collegamenti?: boolean;
 };
@@ -19,6 +19,7 @@ type Props = {
 /** Contenuto della Home: separato dalla pagina per poterlo mostrare anche con dati di prova. */
 export function HomeContenuto({ adesso, nome, conteggi, collegamenti = true }: Props) {
   const daUsare = conteggi?.oggi ?? 0;
+  const vai = daUsare > 0 && collegamenti;
   return (
     <>
       <IntestazionePagina
@@ -29,19 +30,21 @@ export function HomeContenuto({ adesso, nome, conteggi, collegamenti = true }: P
       {conteggi === null ? (
         <ErroreCaricamento cosa="il magazzino" href="/" />
       ) : (
-        <>
+        <div className="space-y-4">
           <section
             aria-labelledby="da-usare-oggi"
-            className="sfondo-hero animazione-entra relative mb-6 overflow-hidden rounded-3xl p-6 text-hero-fg shadow-carta"
+            className="sfondo-hero animazione-entra relative overflow-hidden rounded-carta p-6 text-hero-fg shadow-carta"
           >
-            <span aria-hidden className="pointer-events-none absolute -right-8 -top-10 size-40 rounded-full bg-white/10" />
-            <span aria-hidden className="pointer-events-none absolute -bottom-14 right-10 size-28 rounded-full bg-white/[0.07]" />
-            <div className="relative space-y-1">
-              <h2 id="da-usare-oggi" className="flex items-center gap-2 text-lg font-bold">
-                <PackageCheck className="size-6" aria-hidden />
+            {/* Archi decorativi, come il quadrante del riferimento: solo ornamento */}
+            <svg aria-hidden viewBox="0 0 200 200" className="pointer-events-none absolute -right-10 -top-10 size-52 opacity-25">
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#fff" strokeWidth="14" strokeLinecap="round" pathLength={100} strokeDasharray="55 100" style={{ transform: "rotate(150deg)", transformOrigin: "50% 50%" }} />
+              <circle cx="100" cy="100" r="52" fill="none" stroke="#fff" strokeWidth="14" strokeLinecap="round" pathLength={100} strokeDasharray="40 100" style={{ transform: "rotate(20deg)", transformOrigin: "50% 50%" }} />
+            </svg>
+            <div className="relative space-y-2">
+              <h2 id="da-usare-oggi" className="text-lg font-medium">
                 Da usare oggi
               </h2>
-              <p className="font-display text-6xl font-extrabold leading-none">{daUsare}</p>
+              <p className="text-7xl font-light leading-none tracking-tight">{daUsare}</p>
               <p className="text-lg">
                 {daUsare === 0
                   ? "Niente scade oggi: tutto sotto controllo."
@@ -51,10 +54,10 @@ export function HomeContenuto({ adesso, nome, conteggi, collegamenti = true }: P
               </p>
             </div>
             <Link
-              href={daUsare > 0 && collegamenti ? "/magazzino?stato=presto" : "/scansiona"}
+              href={vai ? "/magazzino?stato=presto" : "/scansiona"}
               className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "relative mt-5 w-full bg-hero-cta text-hero-cta-foreground hover:bg-hero-cta/90")}
             >
-              {daUsare > 0 && collegamenti ? (
+              {vai ? (
                 "Vedi i prodotti"
               ) : (
                 <>
@@ -65,9 +68,8 @@ export function HomeContenuto({ adesso, nome, conteggi, collegamenti = true }: P
             </Link>
           </section>
 
-          <h2 className="mb-3 text-xl font-bold">Stato del magazzino</h2>
-          <RiepilogoSemaforo conteggi={conteggi} collegamenti={collegamenti} />
-        </>
+          <AnelloStato conteggi={conteggi} collegamenti={collegamenti} />
+        </div>
       )}
     </>
   );

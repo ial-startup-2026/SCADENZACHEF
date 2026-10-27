@@ -14,7 +14,7 @@ export default async function AccediPage(props: PageProps<"/accedi">) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-extrabold tracking-tight">Accedi</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Accedi</h1>
       {errore === "conferma" && (
         <p role="alert" className="rounded-xl border-2 border-destructive px-4 py-3 font-semibold text-destructive">
           Il link non è valido o è scaduto. Accedi, oppure registrati di nuovo.
@@ -27,7 +27,7 @@ export default async function AccediPage(props: PageProps<"/accedi">) {
       </ModuloAzione>
       <p className="text-center">
         Non hai un account?{" "}
-        <Link href={`/registrati${link}`} className="font-bold text-primary underline underline-offset-4">
+        <Link href={`/registrati${link}`} className="font-semibold text-foreground underline underline-offset-4">
           Registrati
         </Link>
       </p>

@@ -33,7 +33,7 @@ export function CondividiInvito({ codice, link, nomeLocale }: Props) {
 
   return (
     <div className="space-y-3">
-      <p className="rounded-2xl border-2 border-dashed border-input bg-card py-5 text-center font-mono text-4xl font-extrabold tracking-[0.3em]" aria-label={`Codice ${codice.split("").join(" ")}`}>
+      <p className="rounded-2xl border-2 border-dashed border-input bg-card py-5 text-center font-mono text-4xl font-semibold tracking-[0.3em]" aria-label={`Codice ${codice.split("").join(" ")}`}>
         {codice}
       </p>
       <div className="grid grid-cols-2 gap-2">

@@ -20,14 +20,14 @@ type Props = {
 export function Stepper({ etichetta, valore, onChange, min, max, unita, passo = PASSO_PER_UNITA[unita], formatta }: Props) {
   const cambia = (delta: number) => onChange(limita(arrotonda(valore + delta), min, max));
   const tasto =
-    "flex size-16 shrink-0 items-center justify-center rounded-2xl border-2 border-input bg-card text-foreground active:scale-95 disabled:opacity-40";
+    "flex size-16 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground active:scale-95 disabled:opacity-40";
 
   return (
     <div role="group" aria-label={etichetta} className="flex items-center justify-between gap-3">
       <button type="button" className={tasto} onClick={() => cambia(-passo)} disabled={valore <= min} aria-label="Meno">
         <Minus className="size-8" aria-hidden />
       </button>
-      <output aria-live="polite" className="min-w-0 flex-1 text-center font-display text-5xl font-extrabold leading-none">
+      <output aria-live="polite" className="min-w-0 flex-1 text-center text-5xl font-light leading-none tracking-tight">
         {formatta ? formatta(valore) : formattaQuantita(valore, unita)}
       </output>
       <button type="button" className={tasto} onClick={() => cambia(passo)} disabled={valore >= max} aria-label="Più">

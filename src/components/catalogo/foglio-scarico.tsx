@@ -77,8 +77,8 @@ function Contenuto({
             type="button"
             onClick={() => setQuantita(valore)}
             className={cn(
-              "min-h-12 min-w-16 rounded-full border-2 px-4 text-lg font-bold active:scale-95",
-              quantita === valore ? "border-primary bg-primary-soft text-primary" : "border-input bg-card",
+              "min-h-12 min-w-16 rounded-full border-2 px-4 text-lg font-semibold active:scale-95",
+              quantita === valore ? "border-primary bg-primary text-primary-foreground" : "border-transparent bg-secondary",
             )}
           >
             {nome}

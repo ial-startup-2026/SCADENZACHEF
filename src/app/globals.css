@@ -6,39 +6,50 @@
 
 /*
  * DESIGN TOKEN — unico punto di definizione.
+ * Stile: fondo grigio chiaro, schede bianche molto arrotondate, azioni nere a pillola, un solo accento viola.
  * Tutti i colori sono in esadecimale per poter verificare il contrasto AA nei test
  * (src/lib/design/token.test.ts legge questo file).
  * I colori --stato-* sono riservati ai semafori di scadenza: non usarli per altro.
  */
 :root {
-  --background: #f6f4ee;
-  --foreground: #1a1f1c;
+  --background: #ececf1;
+  --foreground: #111116;
   --card: #ffffff;
-  --card-foreground: #1a1f1c;
+  --card-foreground: #111116;
   --popover: #ffffff;
-  --popover-foreground: #1a1f1c;
-  --primary: #1f5a3f;
+  --popover-foreground: #111116;
+  /* Azione principale: nero (pillole), come nel riferimento. */
+  --primary: #111116;
   --primary-foreground: #ffffff;
-  --secondary: #e6efe9;
-  --secondary-foreground: #14402c;
-  --muted: #ece9e1;
-  --muted-foreground: #55605a;
-  --accent: #e6efe9;
-  --accent-foreground: #14402c;
+  --secondary: #f1f1f5;
+  --secondary-foreground: #111116;
+  --muted: #f1f1f5;
+  --muted-foreground: #5b5b68;
+  --accent: #ece8ff;
+  --accent-foreground: #3b22b8;
   --destructive: #b3261e;
-  --border: #d8d3c7;
-  --input: #8f8a7d;
-  --ring: #1f5a3f;
+  --border: #e2e2e9;
+  --input: #8a8a96;
+  --ring: #6a4cff;
   --radius: 1rem;
 
-  /* Accento "bosco": superfici morbide e testata a gradiente (testo bianco su entrambe le estremità). */
-  --primary-soft: #dcefe3;
-  --hero-from: #2a7a55;
-  --hero-to: #14402c;
+  /* Accento viola: testata della Home, pulsante Scansiona, evidenze. */
+  --primary-soft: #ece8ff;
+  --accento: #6a4cff;
+  --accento-foreground: #ffffff;
+  --hero-from: #6f50fa;
+  --hero-to: #5a3be6;
   --hero-fg: #ffffff;
   --hero-cta-bg: #ffffff;
-  --hero-cta-fg: #14402c;
-  --ombra: 0 1px 2px rgb(26 31 28 / 0.06), 0 10px 28px -10px rgb(26 31 28 / 0.18);
+  --hero-cta-fg: #111116;
+  --ombra: 0 1px 2px rgb(17 17 22 / 0.04), 0 12px 32px -12px rgb(17 17 22 / 0.14);
+
+  /* Anello del magazzino: tinte più scure del semaforo a chip, per avere 3:1 sulla scheda. */
+  --anello-ok: #2e9e62;
+  --anello-in-scadenza: #b58a00;
+  --anello-attenzione: #d9650f;
+  --anello-oggi: #c62828;
+  --anello-scaduto: #3b413e;
 
   --stato-ok-bg: #d6f0df;
   --stato-ok-fg: #0f4a27;
@@ -58,32 +69,40 @@
 }
 
 .dark {
-  --background: #0f1311;
-  --foreground: #ecefea;
-  --card: #181d1a;
-  --card-foreground: #ecefea;
-  --popover: #181d1a;
-  --popover-foreground: #ecefea;
-  --primary: #6cc49a;
-  --primary-foreground: #08140e;
-  --secondary: #1f2a24;
-  --secondary-foreground: #d6ebdd;
-  --muted: #1f2521;
-  --muted-foreground: #a5aea8;
-  --accent: #1f2a24;
-  --accent-foreground: #d6ebdd;
+  --background: #0d0d11;
+  --foreground: #f3f3f7;
+  --card: #18181e;
+  --card-foreground: #f3f3f7;
+  --popover: #18181e;
+  --popover-foreground: #f3f3f7;
+  --primary: #f3f3f7;
+  --primary-foreground: #111116;
+  --secondary: #23232b;
+  --secondary-foreground: #f3f3f7;
+  --muted: #23232b;
+  --muted-foreground: #a9a9b6;
+  --accent: #2b2457;
+  --accent-foreground: #d5ccff;
   --destructive: #ff8a80;
-  --border: #2c3530;
-  --input: #6b756f;
-  --ring: #6cc49a;
+  --border: #2a2a33;
+  --input: #7c7c8a;
+  --ring: #9c86ff;
 
-  --primary-soft: #1d3a2c;
-  --hero-from: #2a7a55;
-  --hero-to: #164a33;
+  --primary-soft: #2b2457;
+  --accento: #6a4cff;
+  --accento-foreground: #ffffff;
+  --hero-from: #6f50fa;
+  --hero-to: #4b2fc9;
   --hero-fg: #ffffff;
   --hero-cta-bg: #ffffff;
-  --hero-cta-fg: #14402c;
-  --ombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 28px -10px rgb(0 0 0 / 0.7);
+  --hero-cta-fg: #111116;
+  --ombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.7);
+
+  --anello-ok: #4cc38a;
+  --anello-in-scadenza: #e3b93a;
+  --anello-attenzione: #f08a3c;
+  --anello-oggi: #e0524f;
+  --anello-scaduto: #9aa09c;
 
   --stato-ok-bg: #17462d;
   --stato-ok-fg: #c6f0d6;
@@ -106,10 +125,13 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-heading: var(--font-display);
-  --font-display: var(--font-display-var), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --radius-carta: 1.75rem;
   --shadow-carta: var(--ombra);
   --color-primary-soft: var(--primary-soft);
   --color-hero-fg: var(--hero-fg);
+  --color-accento: var(--accento);
+  --color-accento-foreground: var(--accento-foreground);
   --color-hero-cta: var(--hero-cta-bg);
   --color-hero-cta-foreground: var(--hero-cta-fg);
 
@@ -206,7 +228,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display-var), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: -0.015em;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
   }
 }

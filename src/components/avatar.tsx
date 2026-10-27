@@ -11,7 +11,7 @@ export function Avatar({ nome, url, className }: Props) {
   ) : (
     <span
       aria-hidden
-      className={cn("flex size-16 shrink-0 items-center justify-center rounded-full bg-secondary text-xl font-bold text-secondary-foreground", className)}
+      className={cn("flex size-16 shrink-0 items-center justify-center rounded-full bg-accent text-xl font-semibold text-accent-foreground", className)}
     >
       {iniziali(nome)}
     </span>

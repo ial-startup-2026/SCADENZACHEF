@@ -41,7 +41,7 @@ export function ModuloSoglie({ iniziali }: { iniziali: Soglie }) {
         <Stepper etichetta="Giorni per lo stato Attenzione" valore={arancione} onChange={setArancione} min={1} max={59} passo={1} unita="pz" formatta={giorni} />
       </section>
 
-      <section aria-label="Anteprima" className="space-y-3 rounded-3xl border border-border bg-card p-4">
+      <section aria-label="Anteprima" className="space-y-3 rounded-carta border border-border bg-card p-4">
         <h2 className="text-lg font-bold">Così funzionerà</h2>
         <ul className="space-y-2">
           {[...STATI_SCADENZA].reverse().map((s) => (

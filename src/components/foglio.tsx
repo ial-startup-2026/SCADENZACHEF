@@ -18,11 +18,11 @@ export function Foglio({ aperto, onChiudi, titolo, descrizione, children }: Prop
     <Dialog.Root open={aperto} onOpenChange={(open) => !open && onChiudi()}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/50 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-        <Dialog.Popup className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[92dvh] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-3xl bg-card p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-card-foreground shadow-2xl outline-none transition-transform duration-300 ease-out data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
-          <span aria-hidden className="mx-auto mb-4 block h-1.5 w-12 rounded-full bg-border" />
+        <Dialog.Popup className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[92dvh] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-[2rem] bg-card p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-card-foreground shadow-2xl outline-none transition-transform duration-300 ease-out data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
+          <span aria-hidden className="mx-auto mb-4 block h-1.5 w-12 rounded-full bg-input/40" />
           <div className="mb-4 flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <Dialog.Title className="text-2xl font-extrabold leading-tight">{titolo}</Dialog.Title>
+              <Dialog.Title className="text-2xl font-medium leading-tight tracking-tight">{titolo}</Dialog.Title>
               {descrizione && (
                 <Dialog.Description className="mt-1 text-base text-muted-foreground">{descrizione}</Dialog.Description>
               )}

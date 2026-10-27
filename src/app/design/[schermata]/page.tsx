@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { HomeContenuto } from "@/components/home-contenuto";
 import { IntestazionePagina } from "@/components/intestazione-pagina";
+import { BarraSuperiore } from "@/components/barra-superiore";
 import { TabBar } from "@/components/tab-bar";
+import AccediPage from "../../(auth)/accedi/page";
+import { PaginaMarchio } from "@/components/pagina-marchio";
 import SpesaPage from "../../(app)/spesa/page";
 import ScansionaPage from "../../scansiona/page";
 import { CatalogoDemo } from "../catalogo-demo";
@@ -10,7 +13,7 @@ import { contaPerStato } from "@/lib/scadenze/catalogo";
 import { ModuloSoglie } from "../../(app)/profilo/soglie/modulo-soglie";
 import { SOGLIE_DEFAULT } from "@/lib/scadenze/soglie";
 
-export const SCHERMATE_ANTEPRIMA = ["home", "magazzino", "spesa", "scansiona", "soglie"] as const;
+export const SCHERMATE_ANTEPRIMA = ["home", "magazzino", "spesa", "scansiona", "soglie", "accedi"] as const;
 
 /** Anteprima delle schermate senza login e con dati di prova, per controllare la grafica. Solo in sviluppo. */
 export default async function AnteprimaPage(props: PageProps<"/design/[schermata]">) {
@@ -22,6 +25,10 @@ export default async function AnteprimaPage(props: PageProps<"/design/[schermata
   const adessoIso = adesso.toISOString();
 
   if (schermata === "scansiona") return <ScansionaPage />;
+  if (schermata === "accedi") {
+    const props = { params: Promise.resolve({}), searchParams: Promise.resolve({}) } as unknown as Parameters<typeof AccediPage>[0];
+    return <PaginaMarchio>{await AccediPage(props)}</PaginaMarchio>;
+  }
 
   const conteggi = contaPerStato(prodottiDemo(adessoIso), adesso, SOGLIE_DEFAULT);
   const contenuto = {
@@ -30,7 +37,7 @@ export default async function AnteprimaPage(props: PageProps<"/design/[schermata
         adesso={adesso}
         nome="Marta"
         collegamenti={false}
-        conteggi={{ scaduto: conteggi.scaduto, oggi: conteggi.oggi, attenzione: conteggi.attenzione, "in-scadenza": conteggi["in-scadenza"] }}
+        conteggi={conteggi}
       />
     ),
     magazzino: (
@@ -51,7 +58,10 @@ export default async function AnteprimaPage(props: PageProps<"/design/[schermata
   const percorso = { home: "/", magazzino: "/magazzino", spesa: "/spesa", soglie: "/profilo" }[schermata as "home" | "magazzino" | "spesa" | "soglie"];
   return (
     <>
-      <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-32 pt-[max(1.5rem,env(safe-area-inset-top))]">{contenuto}</main>
+      <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-36 pt-[max(0.75rem,env(safe-area-inset-top))]">
+        <BarraSuperiore nome="Marta Rossi" />
+        {contenuto}
+      </main>
       <TabBar percorso={percorso} />
     </>
   );

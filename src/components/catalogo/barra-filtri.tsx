@@ -37,8 +37,8 @@ function Chip({
       aria-pressed={attivo}
       onClick={onClick}
       className={cn(
-        "inline-flex min-h-12 shrink-0 items-center gap-1.5 rounded-full border-2 px-4 text-base font-semibold active:scale-95",
-        attivo ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card text-foreground",
+        "inline-flex min-h-12 shrink-0 items-center gap-1.5 rounded-full border-2 px-4 text-base font-medium active:scale-95",
+        attivo ? "border-primary bg-primary text-primary-foreground" : "border-transparent bg-card text-foreground",
       )}
     >
       {attivo && !conMenu && <Check className="size-5" aria-hidden />}
@@ -56,7 +56,7 @@ export function BarraFiltri({ filtri, onChange }: Props) {
   const imposta = (parziale: Partial<Filtri>) => onChange({ ...filtri, ...parziale });
 
   return (
-    <div className="sticky top-0 z-30 -mx-4 space-y-3 bg-background/95 px-4 pb-3 pt-2 backdrop-blur">
+    <div className="sticky top-0 z-30 -mx-4 space-y-3 bg-background/90 px-4 pb-3 pt-2 backdrop-blur">
       <div className="relative">
         <Search className="pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 text-muted-foreground" aria-hidden />
         <Input
@@ -66,7 +66,7 @@ export function BarraFiltri({ filtri, onChange }: Props) {
           placeholder="Cerca un prodotto"
           value={filtri.ricerca}
           onChange={(e) => imposta({ ricerca: e.target.value })}
-          className="pl-12 pr-12"
+          className="rounded-full pl-12 pr-12"
           autoComplete="off"
         />
         {filtri.ricerca && (

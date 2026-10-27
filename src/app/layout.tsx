@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { APP_DESCRIPTION, APP_NAME, COLORI_PWA } from "@/config/app";
 import { SCRIPT_TEMA } from "@/lib/tema";
@@ -7,12 +7,6 @@ import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-// Font dei titoli e del nome: più carattere di Geist, resta leggibile (accenti italiani inclusi).
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-display-var",
   subsets: ["latin"],
 });
 
@@ -44,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="it"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />

@@ -47,14 +47,14 @@ export function CardProdotto({ prodotto, adesso, soglie, onApri, onUsato, onButt
       <motion.div
         aria-hidden
         style={{ opacity: opacitaUsato }}
-        className="absolute inset-0 flex items-center gap-2 rounded-3xl bg-primary px-6 text-xl font-bold text-primary-foreground"
+        className="absolute inset-0 flex items-center gap-2 rounded-carta bg-primary px-6 text-xl font-bold text-primary-foreground"
       >
         <Check className="size-7" /> Usato
       </motion.div>
       <motion.div
         aria-hidden
         style={{ opacity: opacitaButta }}
-        className="absolute inset-0 flex items-center justify-end gap-2 rounded-3xl bg-destructive px-6 text-xl font-bold text-background"
+        className="absolute inset-0 flex items-center justify-end gap-2 rounded-carta bg-destructive px-6 text-xl font-bold text-background"
       >
         Butta <Trash2 className="size-7" />
       </motion.div>
@@ -73,17 +73,19 @@ export function CardProdotto({ prodotto, adesso, soglie, onApri, onUsato, onButt
           if (info.offset.x > SOGLIA_SWIPE) onUsato();
           else if (info.offset.x < -SOGLIA_SWIPE) onButta();
         }}
-        className={cn("relative rounded-3xl border border-l-8 border-border bg-card shadow-carta", barra)}
+        className="relative rounded-carta bg-card shadow-carta"
       >
+        {/* Barretta colorata dello stato: rinforza il chip, che resta il segnale principale. */}
+        <span aria-hidden className={cn("absolute bottom-5 left-3.5 top-5 w-1.5 rounded-full", barra)} />
         <button
           type="button"
           onClick={() => !trascinata.current && onApri()}
-          className="block min-h-14 w-full rounded-3xl p-4 text-left"
+          className="block min-h-14 w-full rounded-carta py-4 pl-8 pr-4 text-left"
           aria-label={`${prodotto.nome}, ${testoGiorni(giorni)}. Apri le azioni`}
         >
           <div className="flex items-start justify-between gap-3">
-            <h3 className="min-w-0 text-xl font-extrabold leading-tight">{prodotto.nome}</h3>
-            <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-base font-bold">
+            <h3 className="min-w-0 text-xl font-semibold leading-tight tracking-tight">{prodotto.nome}</h3>
+            <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-base font-semibold">
               {formattaQuantita(prodotto.quantita, prodotto.unita)}
             </span>
           </div>

@@ -32,10 +32,10 @@ export function SelettoreTema() {
             aria-checked={scelto}
             onClick={() => impostaTema(valore)}
             className={cn(
-              "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl border-2 text-base font-semibold",
+              "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-full border-2 text-base font-medium",
               scelto
                 ? "border-primary bg-primary text-primary-foreground"
-                : "border-input bg-card text-foreground",
+                : "border-transparent bg-secondary text-foreground",
             )}
           >
             <Icona className="size-5" aria-hidden />

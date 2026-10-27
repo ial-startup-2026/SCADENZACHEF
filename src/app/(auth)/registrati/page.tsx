@@ -15,7 +15,7 @@ export default async function RegistratiPage(props: PageProps<"/registrati">) {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-3xl font-extrabold tracking-tight">Crea il tuo account</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Crea il tuo account</h1>
         <p className="text-muted-foreground">Poi crei il tuo locale o entri con il codice che ti ha dato il titolare.</p>
       </div>
       <ModuloAzione azione={registrati} invio="Registrati">
@@ -33,7 +33,7 @@ export default async function RegistratiPage(props: PageProps<"/registrati">) {
       </ModuloAzione>
       <p className="text-center">
         Hai già un account?{" "}
-        <Link href={`/accedi${link}`} className="font-bold text-primary underline underline-offset-4">
+        <Link href={`/accedi${link}`} className="font-semibold text-foreground underline underline-offset-4">
           Accedi
         </Link>
       </p>

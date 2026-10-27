@@ -26,8 +26,8 @@ export function GruppoChip<T extends string>({ voci, selezionati, onToggle, etic
             aria-pressed={attivo}
             onClick={() => onToggle(valore)}
             className={cn(
-              "inline-flex min-h-12 items-center gap-1.5 rounded-full border-2 px-4 text-base font-semibold active:scale-95",
-              attivo ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card text-foreground",
+              "inline-flex min-h-12 items-center gap-1.5 rounded-full border-2 px-4 text-base font-medium active:scale-95",
+              attivo ? "border-primary bg-primary text-primary-foreground" : "border-transparent bg-secondary text-foreground",
             )}
           >
             {attivo && <Check className="size-5" aria-hidden />}

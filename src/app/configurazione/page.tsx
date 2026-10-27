@@ -3,7 +3,7 @@ import { APP_NAME } from "@/config/app";
 export default function ConfigurazionePage() {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-4 px-4 py-10">
-      <h1 className="text-3xl font-extrabold tracking-tight">{APP_NAME} non è ancora collegata</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">{APP_NAME} non è ancora collegata</h1>
       <p>Manca il collegamento a Supabase. Per attivarlo:</p>
       <ol className="list-decimal space-y-2 pl-6">
         <li>

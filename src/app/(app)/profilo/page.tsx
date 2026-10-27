@@ -42,7 +42,7 @@ export default async function ProfiloPage() {
 
       <section className="mb-8 space-y-3">
         <h2 className="text-xl font-bold">I tuoi dati</h2>
-        <ModuloAzione azione={aggiornaProfilo} invio="Salva" variantInvio="secondary">
+        <ModuloAzione azione={aggiornaProfilo} invio="Salva">
           <Campo etichetta="Nome" name="nome" defaultValue={profilo.nome} maxLength={60} autoComplete="given-name" required />
           <CampoRuoloCucina defaultValue={profilo.ruolo_cucina} />
         </ModuloAzione>

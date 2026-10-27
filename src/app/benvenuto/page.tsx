@@ -17,7 +17,7 @@ export default async function BenvenutoPage(props: PageProps<"/benvenuto">) {
     <PaginaMarchio>
       <div className="space-y-6">
         <div className="space-y-1">
-          <h1 className="text-3xl font-extrabold tracking-tight">Benvenuto in cucina</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Benvenuto in cucina</h1>
           <p className="text-muted-foreground">Entra nel locale della tua squadra o creane uno nuovo.</p>
         </div>
         <ModuloBenvenuto codiceIniziale={codiceIniziale} />
