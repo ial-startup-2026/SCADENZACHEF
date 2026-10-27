@@ -1,0 +1,49 @@
+name: Pubblica la vetrina su GitHub Pages
+
+# A ogni modifica di `main`: controlli (lint, tipi, test) e poi pubblicazione della vetrina statica.
+# La vetrina è una versione dimostrativa con dati di prova (vedi `npm run build:vetrina`):
+# l'app completa ha bisogno di un server e non può stare su GitHub Pages.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - uses: actions/configure-pages@v5
+      - run: npm run build:vetrina
+      - run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

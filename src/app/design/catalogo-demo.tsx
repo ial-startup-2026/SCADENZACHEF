@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Catalogo, type AzioniCatalogo } from "@/components/catalogo/catalogo";
 import { annullaSu, modificaSu, scaricaSu, type Registro } from "@/lib/demo/operazioni";
 import { prodottiDemo } from "@/lib/demo/prodotti";
+import type { Filtri } from "@/lib/scadenze/catalogo";
 import { SOGLIE_DEFAULT } from "@/lib/scadenze/soglie";
 
 const attesa = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** Il catalogo con azioni simulate nel browser: niente database, solo per vedere come si comporta. */
-export function CatalogoDemo({ adessoIso }: { adessoIso: string }) {
+export function CatalogoDemo({ adessoIso, filtriIniziali }: { adessoIso: string; filtriIniziali?: Partial<Filtri> }) {
   // "Server" finto: i dati che le azioni modificano. Il catalogo parte da una copia separata.
   const [finto] = useState<Registro>(() => ({ prodotti: prodottiDemo(adessoIso), movimenti: new Map() }));
   const [iniziali] = useState(() => prodottiDemo(adessoIso));
@@ -29,5 +30,5 @@ export function CatalogoDemo({ adessoIso }: { adessoIso: string }) {
     },
   };
 
-  return <Catalogo prodotti={iniziali} soglie={SOGLIE_DEFAULT} adessoIso={adessoIso} azioni={azioni} />;
+  return <Catalogo prodotti={iniziali} soglie={SOGLIE_DEFAULT} adessoIso={adessoIso} azioni={azioni} filtriIniziali={filtriIniziali} />;
 }

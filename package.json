@@ -13,7 +13,8 @@
     "format": "prettier --write .",
     "icone": "node scripts/genera-icone.mjs",
     "db:sql": "node scripts/unisci-sql.mjs",
-    "dev:demo": "MODALITA_DEMO=1 next dev"
+    "dev:demo": "MODALITA_DEMO=1 next dev",
+    "build:vetrina": "VETRINA=1 next build"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
