@@ -32,6 +32,10 @@ export async function proxy(request: NextRequest) {
 
   const { response, autenticato } = await aggiornaSessione(request);
 
+  // Le chiamate di servizio (fetch dal browser) hanno bisogno di una risposta, non di un redirect al login.
+  if (!autenticato && pathname.startsWith("/api/")) {
+    return NextResponse.json({ ok: false, motivo: "non_autenticato" }, { status: 401 });
+  }
   if (!autenticato && !eRotaPubblica(pathname)) {
     const next = encodeURIComponent(pathname + search);
     return redirectConCookie(response, request, `/accedi?next=${next}`);

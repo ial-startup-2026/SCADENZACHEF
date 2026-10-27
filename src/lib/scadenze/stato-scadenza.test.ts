@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   dataBreve,
+  aggiungiGiorni,
   dataOggi,
   dettaglioGiorni,
   giorniAllaScadenza,
@@ -163,5 +164,20 @@ describe("testi", () => {
   it("dataBreve scrive giorno e mese in italiano, l'anno solo se diverso", () => {
     expect(dataBreve("2026-11-01", ADESSO)).toBe("dom 1 nov");
     expect(dataBreve("2027-01-15", ADESSO)).toContain("2027");
+  });
+});
+
+describe("aggiungiGiorni", () => {
+  it("somma e sottrae giorni di calendario, anche a cavallo di mese, anno e ora legale", () => {
+    expect(aggiungiGiorni("2026-10-27", 0)).toBe("2026-10-27");
+    expect(aggiungiGiorni("2026-10-27", 5)).toBe("2026-11-01");
+    expect(aggiungiGiorni("2026-12-31", 1)).toBe("2027-01-01");
+    expect(aggiungiGiorni("2028-02-28", 1)).toBe("2028-02-29");
+    expect(aggiungiGiorni("2026-10-27", -3)).toBe("2026-10-24");
+    expect(aggiungiGiorni("2026-10-24", 3)).toBe("2026-10-27"); // attraversa la fine dell'ora legale
+  });
+
+  it("rifiuta date che non esistono", () => {
+    expect(() => aggiungiGiorni("2026-02-30", 1)).toThrow();
   });
 });

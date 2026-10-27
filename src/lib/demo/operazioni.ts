@@ -1,13 +1,15 @@
 import { messaggioErrore } from "@/lib/errori";
 import { arrotonda } from "@/lib/quantita";
-import type { EsitoAnnulla, EsitoModifica, EsitoScarico } from "@/lib/scadenze/esiti";
-import type { DatiModificaProdotto, InputScarico } from "@/lib/scadenze/schemi";
+import type { EsitoAnnulla, EsitoModifica, EsitoRegistrazione, EsitoScarico } from "@/lib/scadenze/esiti";
+import type { DatiModificaProdotto, DatiNuovoProdotto, InputScarico } from "@/lib/scadenze/schemi";
 import type { ProdottoMagazzino } from "@/lib/supabase/tipi";
 
 /** Prodotti e movimenti tenuti in memoria al posto del database. */
 export type Registro = {
   prodotti: ProdottoMagazzino[];
   movimenti: Map<string, { prodottoId: string; quantita: number }>;
+  /** Prodotti già registrati, per `clientUuid` (rende la registrazione ripetibile). */
+  registrati?: Map<string, string>;
 };
 
 /** Stessa regola di `scarica_prodotto` nel database, su un registro in memoria. */
@@ -44,4 +46,28 @@ export function modificaSu(registro: Registro, prodottoId: string, dati: DatiMod
   if (!p) return { ok: false, errore: messaggioErrore({ message: "prodotto_non_trovato" }) };
   Object.assign(p, dati);
   return { ok: true, prodotto: { ...p } };
+}
+
+/** Stessa regola di `registra_prodotto`: nuovo prodotto attivo; ripetere lo stesso `clientUuid` non crea doppioni. */
+export function registraSu(registro: Registro, dati: DatiNuovoProdotto): EsitoRegistrazione {
+  const registrati = (registro.registrati ??= new Map());
+  const gia = registrati.get(dati.clientUuid);
+  if (gia) return { ok: true, prodottoId: gia, ripetuto: true };
+
+  const prodotto: ProdottoMagazzino = {
+    id: crypto.randomUUID(),
+    nome: dati.nome,
+    categoria: dati.categoria,
+    posizione: dati.posizione,
+    quantita: dati.quantita,
+    unita: dati.unita,
+    data_scadenza: dati.data_scadenza,
+    lotto: dati.lotto,
+    allergeni: dati.allergeni,
+    stato: "attivo",
+    creato_il: new Date().toISOString(),
+  };
+  registro.prodotti.push(prodotto);
+  registrati.set(dati.clientUuid, prodotto.id);
+  return { ok: true, prodottoId: prodotto.id, ripetuto: false };
 }

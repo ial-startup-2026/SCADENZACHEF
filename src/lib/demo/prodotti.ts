@@ -2,13 +2,8 @@ import type { CodiceAllergene } from "@/lib/costanti/allergeni";
 import type { CodiceCategoria } from "@/lib/costanti/categorie";
 import type { CodicePosizione } from "@/lib/costanti/posizioni";
 import type { CodiceUnita } from "@/lib/costanti/unita";
-import { dataOggi } from "@/lib/scadenze/stato-scadenza";
+import { aggiungiGiorni, dataOggi } from "@/lib/scadenze/stato-scadenza";
 import type { ProdottoMagazzino } from "@/lib/supabase/tipi";
-
-const aggiungiGiorni = (data: string, giorni: number) => {
-  const [a, m, g] = data.split("-").map(Number);
-  return new Date(Date.UTC(a, m - 1, g + giorni)).toISOString().slice(0, 10);
-};
 
 type Riga = [string, CodiceCategoria, CodicePosizione, number, CodiceUnita, number, CodiceAllergene[]];
 

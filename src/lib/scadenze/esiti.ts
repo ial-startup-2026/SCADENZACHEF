@@ -8,3 +8,5 @@ export type EsitoScarico =
   | Errore;
 export type EsitoAnnulla = { ok: true; quantita: number; stato: StatoProdotto } | Errore;
 export type EsitoModifica = { ok: true; prodotto: ProdottoMagazzino } | Errore;
+
+export type EsitoRegistrazione = { ok: true; prodottoId: string; ripetuto: boolean } | Errore;

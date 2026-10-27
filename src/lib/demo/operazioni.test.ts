@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { annullaSu, modificaSu, scaricaSu, type Registro } from "./operazioni";
+import { annullaSu, modificaSu, registraSu, scaricaSu, type Registro } from "./operazioni";
 import { prodottiDemo } from "./prodotti";
 
 const ADESSO = "2026-10-27T11:00:00Z";
@@ -78,5 +78,44 @@ describe("modificaSu", () => {
       allergeni: ["latte"],
     });
     expect(esito.ok && esito.prodotto).toMatchObject({ nome: "Burrata pugliese", posizione: "banco", quantita: 6 });
+  });
+});
+
+describe("registraSu", () => {
+  const nuovo = (over = {}) => ({
+    clientUuid: crypto.randomUUID(),
+    nome: "Burrata di Andria",
+    categoria: "latticini" as const,
+    posizione: "cella_frigo" as const,
+    quantita: 2,
+    unita: "pz" as const,
+    data_scadenza: "2026-11-10",
+    lotto: "L1",
+    allergeni: ["latte" as const],
+    fotoPath: null,
+    ...over,
+  });
+
+  it("aggiunge un prodotto attivo con i dati dati", () => {
+    const prima = registro.prodotti.length;
+    const esito = registraSu(registro, nuovo());
+    expect(esito).toMatchObject({ ok: true, ripetuto: false });
+    expect(registro.prodotti).toHaveLength(prima + 1);
+    expect(registro.prodotti.at(-1)).toMatchObject({ nome: "Burrata di Andria", stato: "attivo", quantita: 2, lotto: "L1" });
+  });
+
+  it("ripetere lo stesso invio (coda offline, doppio tocco) non crea doppioni", () => {
+    const dati = nuovo();
+    const a = registraSu(registro, dati);
+    const prima = registro.prodotti.length;
+    const b = registraSu(registro, dati);
+    expect(registro.prodotti).toHaveLength(prima);
+    expect(b).toMatchObject({ ok: true, ripetuto: true, prodottoId: a.ok ? a.prodottoId : "" });
+  });
+
+  it("il prodotto nuovo si può poi usare come gli altri", () => {
+    const esito = registraSu(registro, nuovo());
+    if (!esito.ok) throw new Error("atteso ok");
+    expect(scaricaSu(registro, { clientUuid: crypto.randomUUID(), prodottoId: esito.prodottoId, tipo: "scarico", quantita: 1, motivo: null })).toMatchObject({ ok: true, quantita: 1 });
   });
 });

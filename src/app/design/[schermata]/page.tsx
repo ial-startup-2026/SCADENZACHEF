@@ -6,7 +6,7 @@ import { TabBar } from "@/components/tab-bar";
 import AccediPage from "../../(auth)/accedi/page";
 import { PaginaMarchio } from "@/components/pagina-marchio";
 import SpesaPage from "../../(app)/spesa/page";
-import ScansionaPage from "../../scansiona/page";
+import { ScansionaVetrina } from "@/components/vetrina/scansiona-vetrina";
 import { CatalogoDemo } from "../catalogo-demo";
 import { prodottiDemo } from "@/lib/demo/prodotti";
 import { contaPerStato } from "@/lib/scadenze/catalogo";
@@ -24,7 +24,7 @@ export default async function AnteprimaPage(props: PageProps<"/design/[schermata
   const adesso = new Date();
   const adessoIso = adesso.toISOString();
 
-  if (schermata === "scansiona") return <ScansionaPage />;
+  if (schermata === "scansiona") return <ScansionaVetrina />;
   if (schermata === "accedi") {
     const props = { params: Promise.resolve({}), searchParams: Promise.resolve({}) } as unknown as Parameters<typeof AccediPage>[0];
     return <PaginaMarchio>{await AccediPage(props)}</PaginaMarchio>;

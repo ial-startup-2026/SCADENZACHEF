@@ -37,6 +37,11 @@ export function giorniAllaScadenza(dataScadenza: string, adesso: Date, tz: strin
   return Math.round((giornoUtc(dataScadenza) - giornoUtc(dataOggi(adesso, tz))) / 86_400_000);
 }
 
+/** Aggiunge (o toglie) giorni di calendario a una data `YYYY-MM-DD`. */
+export function aggiungiGiorni(data: string, giorni: number): string {
+  return new Date(giornoUtc(data) + giorni * 86_400_000).toISOString().slice(0, 10);
+}
+
 export type EsitoScadenza = {
   stato: StatoScadenza;
   /** Giorni alla scadenza (negativo se già scaduto). */

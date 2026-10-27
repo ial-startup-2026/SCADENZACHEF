@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { schemaDataScadenza, schemaModificaProdotto, schemaScarico } from "./schemi";
+import { schemaDataScadenza, schemaModificaProdotto, schemaNuovoProdotto, schemaScarico } from "./schemi";
 
 const UUID_A = "3f2b1c9e-8a4d-4e6f-9b1a-2c3d4e5f6a7b";
 const UUID_B = "7a1d2c3b-4e5f-4a6b-8c9d-0e1f2a3b4c5d";
@@ -65,5 +65,34 @@ describe("schemaModificaProdotto", () => {
     expect(schemaModificaProdotto.safeParse({ ...base, nome: "   " }).success).toBe(false);
     expect(schemaModificaProdotto.safeParse({ ...base, posizione: "garage" }).success).toBe(false);
     expect(schemaModificaProdotto.safeParse({ ...base, allergeni: ["cioccolato"] }).success).toBe(false);
+  });
+});
+
+describe("schemaNuovoProdotto", () => {
+  const base = {
+    clientUuid: UUID_A,
+    nome: " Burrata ",
+    categoria: "latticini",
+    posizione: "cella_frigo",
+    unita: "pz",
+    quantita: 3,
+    data_scadenza: "2026-11-01",
+    lotto: "",
+    allergeni: ["latte"],
+    fotoPath: null,
+  };
+
+  it("accetta un prodotto valido e lo ripulisce", () => {
+    const v = schemaNuovoProdotto.parse(base);
+    expect(v).toMatchObject({ nome: "Burrata", lotto: null, quantita: 3 });
+  });
+
+  it.each([0, -1, Number.NaN, 2_000_000])("rifiuta la quantità %s", (quantita) => {
+    expect(schemaNuovoProdotto.safeParse({ ...base, quantita }).success).toBe(false);
+  });
+
+  it("rifiuta id non valido e data inesistente", () => {
+    expect(schemaNuovoProdotto.safeParse({ ...base, clientUuid: "x" }).success).toBe(false);
+    expect(schemaNuovoProdotto.safeParse({ ...base, data_scadenza: "2026-02-30" }).success).toBe(false);
   });
 });

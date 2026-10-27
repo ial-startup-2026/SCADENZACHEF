@@ -63,3 +63,12 @@ export const schemaModificaProdotto = z.object({
 
 export type InputModificaProdotto = z.input<typeof schemaModificaProdotto>;
 export type DatiModificaProdotto = z.output<typeof schemaModificaProdotto>;
+
+/** Prodotto nuovo (dalla scansione o a mano). `clientUuid` rende l'invio ripetibile senza doppioni. */
+export const schemaNuovoProdotto = schemaModificaProdotto.extend({
+  clientUuid: z.uuid(),
+  quantita: z.number().positive("La quantità deve essere maggiore di zero.").max(1_000_000, "La quantità è troppo grande."),
+  fotoPath: z.string().max(200).nullable(),
+});
+
+export type DatiNuovoProdotto = z.output<typeof schemaNuovoProdotto>;

@@ -17,7 +17,7 @@ le modifiche non vengono salvate. L'app completa ha bisogno di un server e non p
 | 1 | Setup, design system, navigazione | fatto |
 | 2 | Database, sicurezza (RLS), accesso, profili e squadra | fatto (da provare con Supabase vero) |
 | 3 | Catalogo con semaforo scadenze, filtri, swipe, soglie | fatto |
-| 4 | Scansione dell'etichetta con AI, conferma, inserimento manuale | da fare |
+| 4 | Scansione dell'etichetta con AI, conferma, inserimento manuale, modalità continua | fatto (provata con letture di prova; la lettura vera richiede la chiave) |
 | 5 | Allergeni (icone e avvisi) e lista della spesa | da fare |
 | 6 | Offline, notifiche push, riepilogo mattutino | da fare |
 | 7 | Report sprechi, test end-to-end, deploy | da fare |
