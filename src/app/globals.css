@@ -31,6 +31,15 @@
   --ring: #1f5a3f;
   --radius: 1rem;
 
+  /* Accento "bosco": superfici morbide e testata a gradiente (testo bianco su entrambe le estremità). */
+  --primary-soft: #dcefe3;
+  --hero-from: #2a7a55;
+  --hero-to: #14402c;
+  --hero-fg: #ffffff;
+  --hero-cta-bg: #ffffff;
+  --hero-cta-fg: #14402c;
+  --ombra: 0 1px 2px rgb(26 31 28 / 0.06), 0 10px 28px -10px rgb(26 31 28 / 0.18);
+
   --stato-ok-bg: #d6f0df;
   --stato-ok-fg: #0f4a27;
   --stato-ok-bd: #7cc596;
@@ -68,6 +77,14 @@
   --input: #6b756f;
   --ring: #6cc49a;
 
+  --primary-soft: #1d3a2c;
+  --hero-from: #2a7a55;
+  --hero-to: #164a33;
+  --hero-fg: #ffffff;
+  --hero-cta-bg: #ffffff;
+  --hero-cta-fg: #14402c;
+  --ombra: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 28px -10px rgb(0 0 0 / 0.7);
+
   --stato-ok-bg: #17462d;
   --stato-ok-fg: #c6f0d6;
   --stato-ok-bd: #3f8f61;
@@ -88,7 +105,13 @@
 @theme inline {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-display);
+  --font-display: var(--font-display-var), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --shadow-carta: var(--ombra);
+  --color-primary-soft: var(--primary-soft);
+  --color-hero-fg: var(--hero-fg);
+  --color-hero-cta: var(--hero-cta-bg);
+  --color-hero-cta-foreground: var(--hero-cta-fg);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -147,5 +170,43 @@
   :focus-visible {
     outline: 3px solid var(--ring);
     outline-offset: 2px;
+  }
+}
+
+@utility sfondo-hero {
+  background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+}
+
+@keyframes entra {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animazione-entra {
+  animation: entra 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display-var), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.015em;
   }
 }

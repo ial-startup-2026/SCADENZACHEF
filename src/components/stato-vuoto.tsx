@@ -13,16 +13,17 @@ type Props = {
 export function StatoVuoto({ icona: Icona, titolo, descrizione, azione }: Props) {
   const IconaAzione = azione?.icona;
   return (
-    <section className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-input bg-card px-6 py-10 text-center">
-      <span className="flex size-16 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-        <Icona className="size-8" aria-hidden />
+    <section className="animazione-entra relative flex flex-col items-center gap-4 overflow-hidden rounded-3xl border border-border bg-card px-6 py-10 text-center shadow-carta">
+      <span aria-hidden className="pointer-events-none absolute -right-8 -top-8 size-32 rounded-full bg-primary-soft" />
+      <span className="relative flex size-20 items-center justify-center rounded-3xl bg-primary-soft text-primary ring-8 ring-primary-soft/60">
+        <Icona className="size-10" aria-hidden />
       </span>
-      <h2 className="text-xl font-bold">{titolo}</h2>
-      <p className="max-w-xs text-muted-foreground">{descrizione}</p>
+      <h2 className="relative text-2xl font-extrabold">{titolo}</h2>
+      <p className="relative max-w-xs text-muted-foreground">{descrizione}</p>
       {azione && (
         <Link
           href={azione.href}
-          className={cn(buttonVariants({ size: "lg" }), "mt-2 w-full max-w-xs")}
+          className={cn(buttonVariants({ size: "lg" }), "relative mt-2 w-full max-w-xs")}
         >
           {IconaAzione && <IconaAzione aria-hidden />}
           {azione.etichetta}

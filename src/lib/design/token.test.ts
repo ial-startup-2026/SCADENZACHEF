@@ -40,6 +40,10 @@ describe.each(Object.entries(TEMI))("token tema %s", (nome, t) => {
     ["muted-foreground", "card"],
     ["accent-foreground", "accent"],
     ["primary", "background"],
+    ["primary", "primary-soft"],
+    ["hero-fg", "hero-from"],
+    ["hero-fg", "hero-to"],
+    ["hero-cta-fg", "hero-cta-bg"],
     ["destructive", "background"],
     ...STATI_SCADENZA.map((s): [string, string] => [`stato-${s}-fg`, `stato-${s}-bg`]),
   ];
