@@ -15,7 +15,7 @@ export default function DesignPage() {
       <section className="space-y-3">
         <h2 className="text-xl font-bold">Schermate</h2>
         <ul className="grid grid-cols-2 gap-2">
-          {["home", "magazzino", "spesa", "scansiona"].map((s) => (
+          {["home", "magazzino", "spesa", "scansiona", "soglie"].map((s) => (
             <li key={s}>
               <Link href={`/design/${s}`} className="flex min-h-12 items-center justify-center rounded-xl border-2 border-input bg-card font-semibold capitalize">
                 {s}

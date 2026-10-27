@@ -3,7 +3,7 @@ export const UNITA = [
   { codice: "pz", etichetta: "pz" },
   { codice: "kg", etichetta: "kg" },
   { codice: "g", etichetta: "g" },
-  { codice: "l", etichetta: "l" },
+  { codice: "l", etichetta: "L" },
   { codice: "ml", etichetta: "ml" },
   { codice: "conf", etichetta: "conf." },
 ] as const;

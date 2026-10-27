@@ -1,20 +1,34 @@
 import type { Metadata } from "next";
-import { Boxes, ScanLine } from "lucide-react";
+import { ErroreCaricamento } from "@/components/errore-caricamento";
+import { Catalogo } from "@/components/catalogo/catalogo";
 import { IntestazionePagina } from "@/components/intestazione-pagina";
-import { StatoVuoto } from "@/components/stato-vuoto";
+import { caricaMagazzino } from "@/lib/dati";
+import type { FiltroStato } from "@/lib/scadenze/catalogo";
+import { annullaMovimento, modificaProdotto, scaricaProdotto } from "./azioni";
 
 export const metadata: Metadata = { title: "Magazzino" };
 
-export default function MagazzinoPage() {
+const STATI_VALIDI: FiltroStato[] = ["tutti", "presto", "scaduti"];
+
+export default async function MagazzinoPage(props: PageProps<"/magazzino">) {
+  const { stato } = await props.searchParams;
+  const statoIniziale = STATI_VALIDI.find((s) => s === stato) ?? "tutti";
+  const magazzino = await caricaMagazzino();
+
   return (
     <>
-      <IntestazionePagina titolo="Magazzino" sottotitolo="Prima esce ciò che scade prima." />
-      <StatoVuoto
-        icona={Boxes}
-        titolo="Il magazzino è vuoto"
-        descrizione="Scansiona l'etichetta di un prodotto per aggiungerlo: ci vogliono pochi secondi."
-        azione={{ href: "/scansiona", etichetta: "Scansiona", icona: ScanLine }}
-      />
+      <IntestazionePagina titolo="Magazzino" />
+      {magazzino.errore ? (
+        <ErroreCaricamento cosa="il magazzino" href="/magazzino" />
+      ) : (
+        <Catalogo
+          prodotti={magazzino.prodotti}
+          soglie={magazzino.soglie}
+          adessoIso={new Date().toISOString()}
+          filtriIniziali={{ stato: statoIniziale }}
+          azioni={{ scarica: scaricaProdotto, annulla: annullaMovimento, modifica: modificaProdotto }}
+        />
+      )}
     </>
   );
 }

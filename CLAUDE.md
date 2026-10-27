@@ -8,7 +8,7 @@ Il nome è **provvisorio**: vive solo in `src/config/app.ts` (`APP_NAME`).
 ## Stato delle fasi
 - [x] **Fase 1** — setup, design system, navigazione con schermate vuote
 - [x] **Fase 2** — schema dati, migrazioni, RLS, seed, auth e profili (database verificato con PGlite; flussi con login **da provare dal vivo** appena c'è il progetto Supabase)
-- [ ] Fase 3 — catalogo con semaforo, filtri, swipe, logica scadenze + test
+- [x] **Fase 3** — catalogo con semaforo, filtri, swipe, logica scadenze + test (UI provata su dati di prova in `/design/magazzino`; le Server Action e la lettura dal database **non** sono ancora provate dal vivo)
 - [ ] Fase 4 — scansione (cattura, route AI, conferma, fallback, modalità continua)
 - [ ] Fase 5 — allergeni e lista della spesa
 - [ ] Fase 6 — offline/PWA, push, riepilogo mattutino
@@ -58,6 +58,18 @@ A fine di ogni fase: lint + typecheck + test devono passare, poi avvio e verific
 - Moduli: `ModuloAzione` + `Campo` (`useActionState`); le azioni restituiscono `StatoAzione` e rimandano i valori scritti (mai la password) perché React svuota il form.
 - Tipi delle righe scritti a mano in `src/lib/supabase/tipi.ts` (nessun `Database` generato finora).
 
+## Catalogo e scadenze (Fase 3)
+- **Logica pura** in `src/lib/scadenze/`: `stato-scadenza.ts` (`statoScadenza`, `giorniAllaScadenza`, `dataOggi`, testi), `soglie.ts` (default 7/3, `schemaSoglie`, `descriviSoglie`), `catalogo.ts` (`filtraProdotti`, `ordinaFEFO`, `contaPerStato`, `normalizza`), `schemi.ts` (Zod per scarico e modifica). Le scadenze sono **date di calendario**: si confrontano giorni nel fuso `Europe/Rome`, mai millisecondi (test su ora legale 29/3 e 25/10 2026, mezzanotte, fusi della macchina).
+- Stati: `>giallo` OK · `arancione+1..giallo` In scadenza · `1..arancione` Attenzione · `0` Scade oggi · `<0` Scaduto. Soglie in `impostazioni_locale` (modificabili dall'Admin in `/profilo/soglie`; stessi vincoli del CHECK).
+- Lettura: `src/lib/dati.ts → caricaMagazzino()` (prodotti attivi + soglie; **se una lettura fallisce restituisce `errore`** e le pagine mostrano `ErroreCaricamento`: mai "vuoto" al posto di un errore).
+- Scritture: Server Action in `app/(app)/magazzino/azioni.ts` → RPC `scarica_prodotto` / `annulla_movimento` (idempotenti su `clientUuid`) e UPDATE di `prodotti_magazzino` per la modifica (solo campi descrittivi; **la quantità non si modifica a mano**).
+- `components/catalogo/`: `Catalogo` (stato locale, filtri, aggiornamento ottimistico con ritorno indietro se il server rifiuta, toast "Annulla" 6 s) riceve le azioni come prop (`AzioniCatalogo`) così l'anteprima usa azioni finte. Swipe (`motion`) **apre sempre un foglio di conferma**: a destra «Usato», a sinistra «Butta» (motivo obbligatorio). Il tocco sulla scheda apre le tre azioni (lo swipe è solo una scorciatoia). `Foglio` = Dialog di base-ui che sale dal basso.
+- `/design/{home,magazzino,spesa,scansiona,soglie}`: anteprime con dati di prova (`app/design/dati-demo.ts`, scadenze relative a oggi). Un file `"use client"` non può esportare funzioni chiamate da componenti server: i dati di prova stanno in un modulo neutro.
+- Home: `HomeContenuto` (conteggi reali). "Da usare oggi" = prodotti che scadono oggi. I riquadri portano a `/magazzino?stato=presto|scaduti`.
+- Toast: in basso sopra la tab bar (zona pollice), pulsante "Annulla" da 48 px. Il litro si scrive «L» (la «l» si confonde con «1»).
+- Filtro allergeni: già presente come "Senza allergene" (testo); le icone e l'avviso fisso arrivano in Fase 5.
+- Dopo `npm run build` con il server di sviluppo acceso il CSS può restare vecchio: fermare il server, `rm -rf .next/dev`, riavviare.
+
 ## Design system
 - **Token in un solo punto**: `src/app/globals.css` (variabili CSS + `@theme inline`). Colori in esadecimale; `src/lib/design/token.test.ts` verifica contrasto AA (≥ 4.5:1) di tutte le coppie testo/sfondo in chiaro e scuro, e che `COLORI_PWA` coincida con i token.
 - Primario verde bosco `#1f5a3f` (scuro: `#6cc49a`). Tema chiaro/scuro/auto: classe `dark` su `<html>`, preferenza in `localStorage` (`src/lib/tema.ts`, script inline anti-flash).
@@ -78,6 +90,7 @@ A fine di ogni fase: lint + typecheck + test devono passare, poi avvio e verific
 | 1 | `@types/node` portato a ^24 (richiesto da Vitest, coerente con Node 24). |
 | 1 | Icone PWA PNG generate con `sharp` (già presente tramite Next) da `scripts/genera-icone.mjs`; `public/icons/*` + `src/app/icon.png` + `src/app/apple-icon.png`. Sono segnaposto: da sostituire con il logo vero. |
 | 1 | Manifest in `src/app/manifest.ts`; service worker e offline arrivano in Fase 6. |
+| 3 | Filtri e ricerca nel browser (lista completa in memoria, pensata anche per l'offline); `motion` per lo swipe; nessuna rettifica manuale di quantità. |
 | 2b | Rifinitura grafica: marchio C (disco + foglia) scelto confrontando 4 varianti a 200/48/32 px; font display Bricolage Grotesque; Home con riepilogo del semaforo (conteggi a zero finché non c'è il catalogo, Fase 3). Il profilo (pagina dopo il login) non è stato ridisegnato. |
 | 2 | Verifica del database con PGlite invece di Supabase locale (niente Docker). Limite: lo stub di `auth` non replica GoTrue e la migrazione Storage non è eseguita nei test. |
 | 2 | Codice d'invito di 6 caratteri (alfabeto senza O/0/I/1/L), non indovinabile con `select`; nessun rate-limit dedicato oltre a quello di Supabase Auth. |

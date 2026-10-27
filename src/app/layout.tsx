@@ -51,7 +51,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col">
         {children}
-        <Toaster position="top-center" richColors closeButton />
+        {/* In basso, sopra la barra di navigazione: "Annulla" resta a portata di pollice. */}
+        <Toaster
+          position="bottom-center"
+          offset={{ bottom: 104 }}
+          mobileOffset={{ bottom: 104 }}
+          richColors
+          toastOptions={{
+            classNames: {
+              toast: "text-base! gap-3! p-4!",
+              actionButton: "min-h-12! px-5! text-base! font-bold! rounded-xl!",
+            },
+          }}
+        />
       </body>
     </html>
   );

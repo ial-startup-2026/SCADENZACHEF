@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight, LogOut, Users } from "lucide-react";
+import { ChevronRight, LogOut, Timer, Users } from "lucide-react";
 import { APP_NAME } from "@/config/app";
 import { Avatar } from "@/components/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -55,6 +55,13 @@ export default async function ProfiloPage() {
             <span className="flex items-center gap-2">
               <Users aria-hidden />
               Squadra e inviti
+            </span>
+            <ChevronRight aria-hidden />
+          </Link>
+          <Link href="/profilo/soglie" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full justify-between")}>
+            <span className="flex items-center gap-2">
+              <Timer aria-hidden />
+              Soglie di scadenza
             </span>
             <ChevronRight aria-hidden />
           </Link>
